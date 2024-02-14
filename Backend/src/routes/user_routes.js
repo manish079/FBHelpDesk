@@ -4,7 +4,7 @@ const router = express.Router();
 const userController = require("../controllers/user_controller");
 
 router.post("/api/userRegister", userController.userRegister);
-router.post("/api/userLogin", userController.loginUser);
+router.post("/api/userLogin", userController.userLogin);
 
 // app.get("/auth/facebook", passport.authenticate("facebook"));
 

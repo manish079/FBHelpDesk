@@ -33,25 +33,20 @@ exports.userRegister = async (req, res) => {
   }
 };
 
-const userLogin = async (req, res) => {
-  const { emailOrMobile, password } = req.body;
+exports.userLogin = async (req, res) => {
+  const { email, password } = req.body;
 
-  console.log("Email/Mobile:", emailOrMobile);
-  console.log("Password:", password);
-
-  if (!emailOrMobile || !password) {
+  if (!email || !password) {
     return res
       .status(400)
       .json({ message: "Email/Mobile and password are required" });
   }
 
   try {
-    // Find the user by email or mobile number
     const user = await User.findOne({
-      $or: [{ email: emailOrMobile }, { mobile: emailOrMobile }],
+      $or: [{ email: email }, { password: password }],
     });
 
-    // If user doesn't exist
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -62,12 +57,6 @@ const userLogin = async (req, res) => {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    // Generate JWT token
-    // const token = jwt.sign({ userId: user._id }, "your_secret_key", {
-    //   expiresIn: "1h", // Token expiration time
-    // });
-
-    // Return success response with token
     return res.status(200).json({ user });
   } catch (error) {
     console.error("Error logging in user:", error);
@@ -75,32 +64,4 @@ const userLogin = async (req, res) => {
   }
 };
 
-// exports.loginUser = async (req, res) => {
-//   const { email, password } = req.body;
-//   if (!email || !password) {
-//     return res.status(400).json({ message: "All fields are required" });
-//   }
-//   try {
-//     const isUserExist = User.findOne({
-//       $or: [{ email }, { password }],
-//     });
-
-//     if (!isUserExist) {
-//       return res.status(404).json({ message: "User not found" });
-//     }
-//     const isPasswordMatch = await bcrypt.compare(
-//       password,
-//       isUserExist.password
-//     );
-
-//     if (!isPasswordMatch) {
-//       return res.status(401).json({ message: "Invalid credentials" });
-//     }
-
-//     res.status(200).json({ isUserExist });
-//     console.log("User password: " + isUserExist);
-//   } catch (error) {
-//     console.error("Error login user:", error);
-//     return res.status(500).json({ message: "Something went wrong" });
-//   }
-// };
+exports.connectToFacebook = async (req, res) => {};
