@@ -7,6 +7,7 @@ const bodyParser = require("body-parser");
 
 app.use(bodyParser.json());
 
+
 // Connect to the database and return a promise
 const dbPromise = databaseConnection.connectToDatabase();
 dbPromise
@@ -14,6 +15,9 @@ dbPromise
   .catch((e) => console.log("DB error: " + e));
 
 app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
+app.get("/home", (req, res) => {
   res.send("Hello World!");
 });
 
